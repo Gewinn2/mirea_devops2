@@ -1,25 +1,28 @@
-# This workflow will build a golang project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
-
-name: Go
+name: Go Build and Test
 
 on:
   push:
     branches: [ "dev" ]
   pull_request:
     branches: [ "dev" ]
+  workflow_dispatch:  # Позволяет запускать вручную
 
 jobs:
-
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
 
     - name: Set up Go
       uses: actions/setup-go@v4
       with:
-        go-version: '1.24'
+        go-version: '1.20'
+
+    - name: Debug - Show branch info
+      run: |
+        echo "Current branch: ${{ github.ref }}"
+        echo "Event name: ${{ github.event_name }}"
 
     - name: Build
       run: go build -v ./...
